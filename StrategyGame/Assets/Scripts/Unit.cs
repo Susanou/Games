@@ -5,8 +5,10 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
 
-    public float moveSpeed;
-    public float thresholdDistance;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float thresholdDistance;
+    [SerializeField] private float rotationSpeed;
+    [SerializeField] private Animator unitAnimator;
 
     private Vector3 targetPosition;
 
@@ -16,13 +18,19 @@ public class Unit : MonoBehaviour
         {
             Vector3 moveDirection = targetPosition - transform.position;
             moveDirection.Normalize();
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime*rotationSpeed);
 
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        }
+        else
+        {
+            unitAnimator.SetBool("IsWalking", false);
         }
 
         if (Input.GetMouseButtonDown(0))
         {
             Move(MouseWorld.GetPosition());
+            unitAnimator.SetBool("IsWalking", true);
         }
 
         
