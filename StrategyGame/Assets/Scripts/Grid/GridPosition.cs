@@ -7,20 +7,20 @@ using System;
 public struct GridPosition : IEquatable<GridPosition>
 {
     public int x;
-    public int y;
+    public int z;
 
 
-    public GridPosition(int x, int y)
+    public GridPosition(int x, int z)
     {
         this.x = x;
-        this.y = y;
+        this.z = z;
     }
 
     public override bool Equals(object obj)
     {
         return obj is GridPosition position &&
                x == position.x &&
-               y == position.y;
+               z == position.z;
     }
 
     public bool Equals(GridPosition other)
@@ -30,33 +30,33 @@ public struct GridPosition : IEquatable<GridPosition>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(x, y);
+        return HashCode.Combine(x, z);
     }
 
     public override string ToString()
     {
-        // string interpolation (f-string in python)
-        return $"x: {x}; y: {y};"; 
+        // string interpolation (f-string in pzthon)
+        return $"x: {x}; z: {z};"; 
     }
 
     public static bool operator ==(GridPosition a, GridPosition b) {
         {
-            return a.x == b.x && a.y == b.y;
+            return a.x == b.x && a.z == b.z;
         }
     }
 
     public static bool operator !=(GridPosition a, GridPosition b)
     {
-        return a.x != b.x || a.y != b.y;
+        return a.x != b.x || a.z != b.z;
     }
 
     public static GridPosition operator +(GridPosition a, GridPosition b)
     {
-        return new GridPosition(a.x+b.x, a.y+b.y);
+        return new GridPosition(a.x+b.x, a.z+b.z);
     }
 
     public static GridPosition operator -(GridPosition a, GridPosition b)
     {
-        return new GridPosition(a.x-b.x, a.y-b.y);
+        return new GridPosition(a.x-b.x, a.z-b.z);
     }
 }

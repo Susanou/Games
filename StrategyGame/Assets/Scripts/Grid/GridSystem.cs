@@ -30,7 +30,7 @@ public class GridSystem
 
     public Vector3 GetWorldPosition(GridPosition position)
     {
-        return new Vector3(position.x, 0 , position.y) * cellSize;
+        return new Vector3(position.x, 0 , position.z) * cellSize;
     }
 
     public GridPosition GetGridPosition(Vector3 worldPosition)
@@ -58,7 +58,25 @@ public class GridSystem
 
     public GridObject GetGridObject(GridPosition position)
     {
-        return gridObjectArray[position.x, position.y];
+        return gridObjectArray[position.x, position.z];
     } 
+
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        return  gridPosition.x >= 0 && 
+                gridPosition.z >= 0 && 
+                gridPosition.x < width && 
+                gridPosition.z < height;
+    }
+
+    public int GetWidth()
+    {
+        return width;
+    }
+
+    public int GetHeight()
+    {
+        return height;
+    }
 
 }
