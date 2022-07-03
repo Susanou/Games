@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
 
     [SerializeField] private Animator unitAnimator;
@@ -13,35 +13,41 @@ public class MoveAction : MonoBehaviour
 
 
     private Vector3 targetPosition;
-    private Unit unit;
 
-    void Awake()
+
+    protected override void Awake()
     {
+        base.Awake(); // runs the Awake() from BaseAction
         targetPosition = transform.position;
-        unit = GetComponent<Unit>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!isActive) return;
+
+        Vector3 moveDirection = targetPosition - transform.position;
+        moveDirection.Normalize();
+
         if (Vector3.Distance(transform.position, targetPosition) > thresholdDistance)
         {
             unitAnimator.SetBool("IsWalking", true);
-            Vector3 moveDirection = targetPosition - transform.position;
-            moveDirection.Normalize();
-            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime*rotationSpeed);
-
+            
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
         }
         else
         {
             unitAnimator.SetBool("IsWalking", false);
+            isActive = false;
         }
+
+        transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime*rotationSpeed);
     }
 
     public void Move(GridPosition targetPosition)
     {
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(targetPosition);
+        isActive = true;
     }
     
 
